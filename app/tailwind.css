@@ -1,12 +1,25 @@
+/* styles.css */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 html,
 body {
-  @apply bg-white dark:bg-gray-950;
+  @apply bg-white; /* Default background color for light mode */
+}
 
-  @media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark) {
+  html,
+  body {
+    background-color: #121212; /* Fallback background color */
+    background-image: linear-gradient(
+      to top,
+      #1a1a1a 0%,
+      #161616 10%,
+      #121212 15%,
+      #121212 100%
+    );
     color-scheme: dark;
   }
 }
