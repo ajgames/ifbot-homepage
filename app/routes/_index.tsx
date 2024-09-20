@@ -1,5 +1,7 @@
+import { LoaderFunctionArgs } from "@remix-run/cloudflare";
 import type { MetaFunction } from "@remix-run/node";
 import Yarn from "~/components/Yarn";
+import { collection } from "~/database/mongoDbClient";
 
 export const meta: MetaFunction = () => {
   return [
@@ -7,6 +9,17 @@ export const meta: MetaFunction = () => {
     { name: "description", content: "Welcome to the IfBot. We make your work and life easier by providing LLM's context that is relevant to you. We prompt YOU for if and when you want to take action. " },
   ];
 };
+
+export async function loader({request}: LoaderFunctionArgs) {
+  const fullUrl = new URL(request.url);
+  await collection.metrics.insertOne({
+      event: "PageView",
+      uri: `${fullUrl.origin}${fullUrl.pathname}`,
+      user: null,
+      createdAt: new Date()
+  })
+  return null;
+}
 
 export default function Index() {
   return (
